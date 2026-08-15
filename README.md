@@ -23,9 +23,9 @@ name: Optimize Images
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   optimize:
@@ -37,9 +37,9 @@ jobs:
       - name: Optimize Images
         uses: ./
         with:
-          jpeg_quality: '80'
-          png_compression_level: '6'
-          webp_quality: '80'
+          jpeg_quality: "80"
+          png_compression_level: "6"
+          webp_quality: "80"
 
       - name: Commit optimized images
         uses: stefanzweifel/git-auto-commit-action@v5
@@ -51,25 +51,25 @@ jobs:
 
 ## Inputs
 
-| Input | Description | Default |
-| --- | --- | --- |
-| `path` | Target directory or path pattern to search for images. | `.` |
-| `ignore_paths` | Comma-separated list of relative directory/file paths to ignore. | `node_modules,.git,dist,build` |
-| `jpeg_quality` | Compression quality for JPEG images (`1`-`100`). | `80` |
-| `png_compression_level` | Compression level for PNG images (`0`-`9`). | `6` |
-| `webp_quality` | Compression quality for WebP images (`1`-`100`). | `80` |
-| `convert_to_webp` | Automatically convert JPEG/PNG images to WebP format if size decreases (`true`/`false`). | `false` |
+| Input                   | Description                                                                              | Default                        |
+| ----------------------- | ---------------------------------------------------------------------------------------- | ------------------------------ |
+| `path`                  | Target directory or path pattern to search for images.                                   | `.`                            |
+| `ignore_paths`          | Comma-separated list of relative directory/file paths to ignore.                         | `node_modules,.git,dist,build` |
+| `jpeg_quality`          | Compression quality for JPEG images (`1`-`100`).                                         | `80`                           |
+| `png_compression_level` | Compression level for PNG images (`0`-`9`).                                              | `6`                            |
+| `webp_quality`          | Compression quality for WebP images (`1`-`100`).                                         | `80`                           |
+| `convert_to_webp`       | Automatically convert JPEG/PNG images to WebP format if size decreases (`true`/`false`). | `false`                        |
 
 ---
 
 ## Outputs
 
-| Output | Description |
-| --- | --- |
-| `total_original_bytes` | Total byte size of all discovered target images before optimization. |
-| `total_optimized_bytes` | Total byte size of images after optimization. |
-| `total_saved_bytes` | Total bytes saved across all optimized images. |
-| `optimized_count` | Number of images successfully optimized or converted. |
+| Output                  | Description                                                          |
+| ----------------------- | -------------------------------------------------------------------- |
+| `total_original_bytes`  | Total byte size of all discovered target images before optimization. |
+| `total_optimized_bytes` | Total byte size of images after optimization.                        |
+| `total_saved_bytes`     | Total bytes saved across all optimized images.                       |
+| `optimized_count`       | Number of images successfully optimized or converted.                |
 
 ---
 

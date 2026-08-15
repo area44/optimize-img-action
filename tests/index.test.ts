@@ -1,6 +1,7 @@
 import { describe, expect, it, beforeEach, afterEach } from "bun:test";
 import { mkdir, rm, writeFile, readFile, stat } from "node:fs/promises";
 import { join } from "node:path";
+
 import { findImageFiles, optimizeImage, processImages, getOptionsFromEnv } from "../src/index.ts";
 
 const TEST_DIR = join(process.cwd(), "tmp_test_images");
@@ -9,7 +10,7 @@ const TEST_DIR = join(process.cwd(), "tmp_test_images");
 async function createTestPng(filepath: string) {
   const base1x1Png = Buffer.from(
     "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
-    "base64"
+    "base64",
   );
   // Expand 1x1 to 100x100 uncompressed PNG
   const pngBytes = await new Bun.Image(base1x1Png)
@@ -23,12 +24,9 @@ async function createTestPng(filepath: string) {
 async function createTestJpeg(filepath: string) {
   const base1x1Png = Buffer.from(
     "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
-    "base64"
+    "base64",
   );
-  const jpegBytes = await new Bun.Image(base1x1Png)
-    .resize(200, 200)
-    .jpeg({ quality: 100 })
-    .bytes();
+  const jpegBytes = await new Bun.Image(base1x1Png).resize(200, 200).jpeg({ quality: 100 }).bytes();
   await writeFile(filepath, jpegBytes);
 }
 

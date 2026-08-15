@@ -1,6 +1,6 @@
+import { appendFileSync } from "node:fs";
 import { readdir, stat, unlink } from "node:fs/promises";
 import { join, extname, relative, resolve } from "node:path";
-import { appendFileSync } from "node:fs";
 
 export interface OptimizationOptions {
   path?: string;
@@ -65,7 +65,7 @@ export function getOptionsFromEnv(): OptimizationOptions {
 
 export async function findImageFiles(
   targetPath: string,
-  ignoreList: string[] = []
+  ignoreList: string[] = [],
 ): Promise<string[]> {
   const absoluteTarget = resolve(targetPath);
   const imageFiles: string[] = [];
@@ -122,7 +122,7 @@ export async function findImageFiles(
 
 export async function optimizeImage(
   filePath: string,
-  options: OptimizationOptions
+  options: OptimizationOptions,
 ): Promise<OptimizationResult> {
   const fileStat = await stat(filePath);
   const originalBytes = fileStat.size;
@@ -282,10 +282,14 @@ export async function main() {
     for (const r of summary.results) {
       if (r.status === "optimized") {
         const savedPct = ((r.savedBytes / r.originalBytes) * 100).toFixed(1);
-        console.log(` ✅ ${relative(process.cwd(), r.filePath)}: ${formatBytes(r.originalBytes)} -> ${formatBytes(r.optimizedBytes)} (-${savedPct}%)`);
+        console.log(
+          ` ✅ ${relative(process.cwd(), r.filePath)}: ${formatBytes(r.originalBytes)} -> ${formatBytes(r.optimizedBytes)} (-${savedPct}%)`,
+        );
       } else if (r.status === "converted_to_webp") {
         const savedPct = ((r.savedBytes / r.originalBytes) * 100).toFixed(1);
-        console.log(` 🔄 ${relative(process.cwd(), r.filePath)} -> ${relative(process.cwd(), r.newPath!)}: ${formatBytes(r.originalBytes)} -> ${formatBytes(r.optimizedBytes)} (-${savedPct}%)`);
+        console.log(
+          ` 🔄 ${relative(process.cwd(), r.filePath)} -> ${relative(process.cwd(), r.newPath!)}: ${formatBytes(r.originalBytes)} -> ${formatBytes(r.optimizedBytes)} (-${savedPct}%)`,
+        );
       } else if (r.status === "error") {
         console.log(` ❌ ${relative(process.cwd(), r.filePath)}: Error - ${r.error}`);
       } else {

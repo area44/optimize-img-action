@@ -1,48 +1,48 @@
-name: 'Auto Optimize Images'
-description: 'Automatically optimize JPEG, PNG, and WebP images in a repository using Bun native Bun.Image pipeline.'
-author: 'autoptimize-img'
+name: "Auto Optimize Images"
+description: "Automatically optimize JPEG, PNG, and WebP images in a repository using Bun native Bun.Image pipeline."
+author: "autoptimize-img"
 branding:
-  icon: 'image'
-  color: 'blue'
+  icon: "image"
+  color: "blue"
 
 inputs:
   path:
-    description: 'Target directory or path pattern to search for images to optimize.'
+    description: "Target directory or path pattern to search for images to optimize."
     required: false
-    default: '.'
+    default: "."
   ignore_paths:
-    description: 'Comma-separated list of paths or glob patterns to ignore.'
+    description: "Comma-separated list of paths or glob patterns to ignore."
     required: false
-    default: 'node_modules,.git,dist,build'
+    default: "node_modules,.git,dist,build"
   jpeg_quality:
-    description: 'JPEG compression quality (1-100).'
+    description: "JPEG compression quality (1-100)."
     required: false
-    default: '80'
+    default: "80"
   png_compression_level:
-    description: 'PNG zlib compression level (0-9).'
+    description: "PNG zlib compression level (0-9)."
     required: false
-    default: '6'
+    default: "6"
   webp_quality:
-    description: 'WebP compression quality (1-100).'
+    description: "WebP compression quality (1-100)."
     required: false
-    default: '80'
+    default: "80"
   convert_to_webp:
-    description: 'Convert JPEG/PNG images to WebP format if size is smaller.'
+    description: "Convert JPEG/PNG images to WebP format if size is smaller."
     required: false
-    default: 'false'
+    default: "false"
 
 outputs:
   total_original_bytes:
-    description: 'Total size of images before optimization in bytes.'
+    description: "Total size of images before optimization in bytes."
   total_optimized_bytes:
-    description: 'Total size of images after optimization in bytes.'
+    description: "Total size of images after optimization in bytes."
   total_saved_bytes:
-    description: 'Total bytes saved after optimization.'
+    description: "Total bytes saved after optimization."
   optimized_count:
-    description: 'Number of images successfully optimized.'
+    description: "Number of images successfully optimized."
 
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
     - name: Setup Bun
       uses: oven-sh/setup-bun@v2
