@@ -1,0 +1,17 @@
+{
+  "name": "autoptimize-img",
+  "version": "1.0.0",
+  "description": "Auto optimize JPEG, PNG, and WebP images in GitHub repositories using Bun.Image",
+  "module": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "bun run src/index.ts",
+    "test": "bun test"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
