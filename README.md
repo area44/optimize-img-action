@@ -1,14 +1,14 @@
-# Auto Optimize Images Action (`autoptimize-img`)
+# Optimize Images Action
 
 A fast GitHub Action powered by **[Bun](https://bun.sh)** and native **`Bun.Image`** processing pipeline to automatically optimize JPEG, PNG, and WebP images in your GitHub repository.
 
 ## Features
 
-- ⚡ **Blazing Fast**: Powered by Bun's native image transformation pipeline (zero heavy C++ native module npm installs).
-- 🖼️ **Supports Popular Formats**: Optimizes `.jpg`, `.jpeg`, `.png`, and `.webp` images.
-- 🔄 **Optional WebP Conversion**: Optionally converts JPEG/PNG images to modern WebP format when byte savings are realized.
-- ⚙️ **Configurable**: Customize compression levels, target folders, and ignored patterns.
-- 📊 **Detailed Output**: Provides clear logs and GitHub Action output variables for summary reports and downstream steps.
+- **Blazing Fast**: Powered by Bun's native image transformation pipeline (zero heavy C++ native module npm installs).
+- **Supports Popular Formats**: Optimizes `.jpg`, `.jpeg`, `.png`, and `.webp` images.
+- **Optional WebP Conversion**: Optionally converts JPEG/PNG images to modern WebP format when byte savings are realized.
+- **Configurable**: Customize compression levels, target folders, and ignored patterns.
+- **Detailed Output**: Provides clear logs and GitHub Action output variables for summary reports and downstream steps.
 
 ---
 
