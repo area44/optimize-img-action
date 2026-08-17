@@ -1,6 +1,6 @@
 name: "Auto Optimize Images"
 description: "Automatically optimize JPEG, PNG, and WebP images in a repository using Bun native Bun.Image pipeline."
-author: "autoptimize-img"
+author: "area44"
 branding:
   icon: "image"
   color: "blue"
