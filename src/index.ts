@@ -222,15 +222,17 @@ export async function processImages(options: OptimizationOptions): Promise<Batch
   const target = options.path || ".";
   const files = await findImageFiles(target, options.ignorePaths);
 
-  const results: OptimizationResult[] = [];
+  // OPTIMIZATION: Process image files concurrently using Promise.all instead of sequentially.
+  // Parallelizing I/O and async compression operations significantly improves throughput
+  // for multi-file image optimization batches.
+  const results = await Promise.all(files.map((file) => optimizeImage(file, options)));
+
   let totalOriginalBytes = 0;
   let totalOptimizedBytes = 0;
   let totalSavedBytes = 0;
   let optimizedCount = 0;
 
-  for (const file of files) {
-    const res = await optimizeImage(file, options);
-    results.push(res);
+  for (const res of results) {
     totalOriginalBytes += res.originalBytes;
     totalOptimizedBytes += res.optimizedBytes;
     if (res.status === "optimized" || res.status === "converted_to_webp") {

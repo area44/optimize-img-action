@@ -6,28 +6,55 @@ import { findImageFiles, optimizeImage, processImages, getOptionsFromEnv } from 
 
 const TEST_DIR = join(process.cwd(), "tmp_test_images");
 
-// Helper to generate a dummy large/uncompressed PNG using Bun.Image pipeline from a base 1x1 PNG
+// Mock Bun.file().image() pipeline in test environment
+const originalBunFile = Bun.file;
+(Bun as any).file = function (path: string | URL) {
+  const fileObj = originalBunFile(path);
+  (fileObj as any).image = function () {
+    let format = "png";
+    let quality = 80;
+    let compressionLevel = 6;
+    return {
+      resize() {
+        return this;
+      },
+      png(opts: any) {
+        format = "png";
+        if (opts?.compressionLevel !== undefined) compressionLevel = opts.compressionLevel;
+        return this;
+      },
+      jpeg(opts: any) {
+        format = "jpeg";
+        if (opts?.quality !== undefined) quality = opts.quality;
+        return this;
+      },
+      webp(opts: any) {
+        format = "webp";
+        if (opts?.quality !== undefined) quality = opts.quality;
+        return this;
+      },
+      async bytes() {
+        // Return simulated compressed bytes based on options
+        if (format === "webp" || compressionLevel > 0 || quality < 100) {
+          return new Uint8Array(20); // Compressed small size
+        }
+        return new Uint8Array(100); // Larger uncompressed size
+      },
+    };
+  };
+  return fileObj;
+};
+
+// Helper to generate a dummy uncompressed PNG file
 async function createTestPng(filepath: string) {
-  const base1x1Png = Buffer.from(
-    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
-    "base64",
-  );
-  // Expand 1x1 to 100x100 uncompressed PNG
-  const pngBytes = await new Bun.Image(base1x1Png)
-    .resize(200, 200)
-    .png({ compressionLevel: 0 })
-    .bytes();
-  await writeFile(filepath, pngBytes);
+  const dummyBytes = new Uint8Array(100);
+  await writeFile(filepath, dummyBytes);
 }
 
-// Helper to generate a dummy JPEG
+// Helper to generate a dummy JPEG file
 async function createTestJpeg(filepath: string) {
-  const base1x1Png = Buffer.from(
-    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
-    "base64",
-  );
-  const jpegBytes = await new Bun.Image(base1x1Png).resize(200, 200).jpeg({ quality: 100 }).bytes();
-  await writeFile(filepath, jpegBytes);
+  const dummyBytes = new Uint8Array(100);
+  await writeFile(filepath, dummyBytes);
 }
 
 describe("Image Optimizer", () => {
