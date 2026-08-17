@@ -6,44 +6,42 @@ import { findImageFiles, optimizeImage, processImages, getOptionsFromEnv } from 
 
 const TEST_DIR = join(process.cwd(), "tmp_test_images");
 
-// Mock Bun.file().image() pipeline if native Bun image binding is absent in test environment
+// Mock Bun.file().image() pipeline in test environment
 const originalBunFile = Bun.file;
 (Bun as any).file = function (path: string | URL) {
   const fileObj = originalBunFile(path);
-  if (typeof (fileObj as any).image !== "function") {
-    (fileObj as any).image = function () {
-      let format = "png";
-      let quality = 80;
-      let compressionLevel = 6;
-      return {
-        resize() {
-          return this;
-        },
-        png(opts: any) {
-          format = "png";
-          if (opts?.compressionLevel !== undefined) compressionLevel = opts.compressionLevel;
-          return this;
-        },
-        jpeg(opts: any) {
-          format = "jpeg";
-          if (opts?.quality !== undefined) quality = opts.quality;
-          return this;
-        },
-        webp(opts: any) {
-          format = "webp";
-          if (opts?.quality !== undefined) quality = opts.quality;
-          return this;
-        },
-        async bytes() {
-          // Return simulated compressed bytes based on options
-          if (format === "webp" || compressionLevel > 0 || quality < 100) {
-            return new Uint8Array(20); // Compressed small size
-          }
-          return new Uint8Array(100); // Larger uncompressed size
-        },
-      };
+  (fileObj as any).image = function () {
+    let format = "png";
+    let quality = 80;
+    let compressionLevel = 6;
+    return {
+      resize() {
+        return this;
+      },
+      png(opts: any) {
+        format = "png";
+        if (opts?.compressionLevel !== undefined) compressionLevel = opts.compressionLevel;
+        return this;
+      },
+      jpeg(opts: any) {
+        format = "jpeg";
+        if (opts?.quality !== undefined) quality = opts.quality;
+        return this;
+      },
+      webp(opts: any) {
+        format = "webp";
+        if (opts?.quality !== undefined) quality = opts.quality;
+        return this;
+      },
+      async bytes() {
+        // Return simulated compressed bytes based on options
+        if (format === "webp" || compressionLevel > 0 || quality < 100) {
+          return new Uint8Array(20); // Compressed small size
+        }
+        return new Uint8Array(100); // Larger uncompressed size
+      },
     };
-  }
+  };
   return fileObj;
 };
 
