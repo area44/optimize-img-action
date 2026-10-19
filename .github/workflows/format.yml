@@ -13,10 +13,10 @@ jobs:
       contents: write
     steps:
       - name: Checkout code
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
           ref: ${{ github.head_ref || github.ref }}
 
       - name: Run autofmt
-        uses: area44/autofmt-action@v0.1.0
+        uses: area44/autofmt-action@d2c585d7e412b237cde77b054c680835fc5d3999 # v0.1.0
